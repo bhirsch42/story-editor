@@ -1,13 +1,13 @@
 <template>
-  <div class="row">
-    <div class="four columns">
-      <button @click="addSection">Add Section</button>
+  <div class="d-flex">
+    <div>
+      <button class="btn btn-sm btn-primary" @click="addSection">Add Section</button>
       {{ width }}
       <ul>
         <li v-for="section in sections" :key="section.title">
           {{ section.title }}: {{ section.path }}
           <ul>
-            <li v-for="scene in section.scenes" :key="scene.body">
+            <li v-for="scene in section.scenes" :key="scene.id">
               <input type="text" v-model="scene.body">
             </li>
           </ul>
@@ -15,18 +15,28 @@
       </ul>
     </div>
 
-    <div class="eight columns" ref="wheelEl">
+    <div class="flex-grow-1" ref="wheelEl">
       <svg :width="width" height="500">
         <g class="sections" :style="`transform: translate(${width / 2}px, 250px)`">
-          <g class="section" v-for="(section, i) in sections" :key="section.title">
+          <g class="section" v-for="(section, i) in sections" :key="section.id">
             <path :d="svg.sections[i].section"/>
+<!--
             <circle :cx="svg.sections[i].label.x"
                     :cy="svg.sections[i].label.y"
                     :r="2" fill="red"/>
+ -->
             <g class="scenes" v-for="(scene, j) in section.scenes" :key="scene.body">
-              <circle :cx="svg.scenes[i][j].x"
-                      :cy="svg.scenes[i][j].y"
-                      :r="2" fill="blue"/>
+              <line :x1="svg.scenes[i][j].lineInnerX"
+                    :y1="svg.scenes[i][j].lineInnerY"
+                    :x2="svg.scenes[i][j].lineOuterX"
+                    :y2="svg.scenes[i][j].lineOuterY"
+                    stroke="black"/>
+              <text :x="svg.scenes[i][j].textX"
+                    :y="svg.scenes[i][j].textY"
+                    :text-anchor="svg.scenes[i][j].textAnchor"
+                    :alignment-baseline="svg.scenes[i][j].alignmentBaseline">
+                {{ scene.body }}
+              </text>
             </g>
           </g>
         </g>
@@ -42,7 +52,7 @@ import {
   onMounted
 } from '@vue/composition-api';
 
-import generateSectionSvgs from '@/lib/wheel/generate-section-svgs';
+import generateWheel from '@/lib/wheel/generate-section-svgs';
 import sectionsFixture from '@/fixtures/sections';
 
 export default {
@@ -71,10 +81,10 @@ export default {
         ],
       });
 
-      svg.value = generateSectionSvgs(sections);
+      svg.value = generateWheel({ sections, width: width.value });
     }
 
-    svg.value = generateSectionSvgs(sections);
+    svg.value = generateWheel({ sections, width: width.value });
 
     return {
       sections: sections,
@@ -88,6 +98,7 @@ export default {
 </script>
 
 <style scoped>
-  .wheel {
+  svg {
+    font-family: 'Courier Prime', monospace;
   }
 </style>
