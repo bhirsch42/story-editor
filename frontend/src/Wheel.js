@@ -12,40 +12,37 @@ export const SCENE_LINE_LENGTH = 10
 export const SCENE_LINE_PADDING = 5;
 export const SCENE_PADDING = 10;
 
-class Wheel extends React.Component {
-  render () {
-    let { sections } = this.props;
-    let width = 1000;
-    let height = 600;
+function Wheel({ sections }) {
+  let width = 1000;
+  let height = 600;
 
 
-    let endAngle = 0;
-    let sectionAngles = sections.map(({ size, id }) => {
-      let startAngle = endAngle;
-      endAngle = startAngle + size * Math.PI * 2;
-      return { startAngle, endAngle, key: id };
-    });
+  let endAngle = 0;
+  let sectionAngles = sections.map(({ size, id }) => {
+    let startAngle = endAngle;
+    endAngle = startAngle + size * Math.PI * 2;
+    return { startAngle, endAngle, key: id };
+  });
 
-    let transformCenter = {transform: `translateX(${width / 2}px) translateY(${height / 2}px)`};
+  let transformCenter = {transform: `translateX(${width / 2}px) translateY(${height / 2}px)`};
 
-    let scenes = flatten(sections.map(({ scenes }) => scenes));
+  let scenes = flatten(sections.map(({ scenes }) => scenes));
 
-    return (
-      <div className="wheel">
-        <div className="wheel__foreground" style={transformCenter}>
-          <Scenes sections={sections} sectionAngles={sectionAngles} width={width}/>
-        </div>
-        <svg width={width} height={height} style={{border: '1px solid green'}}>
-          <g style={transformCenter}>
-            <Circle sections={sections} sectionAngles={sectionAngles}/>
-            <g className="wheel__scene-lines">
-              {scenes.map(scene => <SceneLine scene={scene} key={scene.id}/>)}
-            </g>
-          </g>
-        </svg>
+  return (
+    <div className="wheel">
+      <div className="wheel__foreground" style={transformCenter}>
+        <Scenes sections={sections} sectionAngles={sectionAngles} width={width}/>
       </div>
-    );
-  }
+      <svg width={width} height={height} style={{border: '1px solid green'}}>
+        <g style={transformCenter}>
+          <Circle sections={sections} sectionAngles={sectionAngles}/>
+          <g className="wheel__scene-lines">
+            {scenes.map(scene => <SceneLine scene={scene} key={scene.id}/>)}
+          </g>
+        </g>
+      </svg>
+    </div>
+  );
 }
 
 export default Wheel;
