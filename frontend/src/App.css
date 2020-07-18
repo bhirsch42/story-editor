@@ -1,0 +1,32 @@
+.wheel {
+  position: relative;
+}
+
+.wheel line {
+  stroke: black;
+}
+
+.wheel__foreground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.wheel__scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+
+  /*border: 1px solid #AAA;*/
+  background-color: #FFF;
+  padding: .25em;
+  transition: background-color .25s ease;
+  cursor: pointer;
+}
+
+.wheel__scene:hover {
+  background-color: lightgray;
+}

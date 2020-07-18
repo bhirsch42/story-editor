@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App">
       <h1>My cool app</h1>
-      <Wheel sections={wheelData} width={1200} height={800}/>
+      <Wheel sections={wheelData} width={1000} height={400}/>
     </div>
   );
 }

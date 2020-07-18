@@ -6,7 +6,7 @@ export default [
     scenes: [
       {
         id: 2,
-        body: 'A cool hero A cool hero A cool hero A cool hero A cool hero A cool hero A cool hero A cool hero',
+        body: 'A cool hero',
       },
       {
         id: 3,
@@ -128,10 +128,6 @@ export default [
       {
         id: 27,
         body: "Parents aren't home",
-      },
-      {
-        id: 28,
-        body: 'Goes to school',
       },
     ],
   },
