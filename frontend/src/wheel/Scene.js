@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-function Scene({ body, x, y, lineX, lineY, width, id, onClick, isEditing }) {
+function Scene({ body, x, y, lineX, lineY, width, id, onClickScene, isEditing, wasEditing, onClick }) {
   let sceneBody;
 
   if (isEditing) {
@@ -15,8 +15,11 @@ function Scene({ body, x, y, lineX, lineY, width, id, onClick, isEditing }) {
     )
   }
 
+  let isEditingClass = isEditing ? 'wheel__scene--is-editing' : '';
+  let wasEditingClass = wasEditing ? 'wheel__scene--was-editing' : '';
+
   return (
-    <div className="wheel__scene"
+    <div className={`wheel__scene ${isEditingClass} ${wasEditingClass}`}
          data-x={x}
          data-y={y}
          data-line-x={lineX}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { flatten } from 'lodash';
 import Scenes from './wheel/Scenes';
 import Circle from './wheel/Circle';
@@ -16,7 +16,6 @@ function Wheel({ sections }) {
   let width = 1000;
   let height = 600;
 
-
   let endAngle = 0;
   let sectionAngles = sections.map(({ size, id }) => {
     let startAngle = endAngle;
@@ -28,16 +27,32 @@ function Wheel({ sections }) {
 
   let scenes = flatten(sections.map(({ scenes }) => scenes));
 
+  let [currentlyEditingId, setCurrentlyEditingId] = useState(null);
+  let [previouslyEditingId, setPreviouslyEditingId] = useState(null);
+
+  let onClickScene = scene => {
+    setPreviouslyEditingId(currentlyEditingId);
+    setCurrentlyEditingId(scene.id);
+  }
+
   return (
     <div className="wheel">
       <div className="wheel__foreground" style={transformCenter}>
-        <Scenes sections={sections} sectionAngles={sectionAngles} width={width}/>
+        <Scenes sections={sections}
+                sectionAngles={sectionAngles}
+                width={width}
+                previouslyEditingId={previouslyEditingId}
+                currentlyEditingId={currentlyEditingId}
+                onClickScene={onClickScene}/>
       </div>
       <svg width={width} height={height} style={{border: '1px solid green'}}>
         <g style={transformCenter}>
           <Circle sections={sections} sectionAngles={sectionAngles}/>
           <g className="wheel__scene-lines">
-            {scenes.map(scene => <SceneLine scene={scene} key={scene.id}/>)}
+            {scenes.map(scene => <SceneLine scene={scene}
+                                            key={scene.id}
+                                            isEditing={scene.id === currentlyEditingId}
+                                            wasEditing={scene.id === previouslyEditingId}/>)}
           </g>
         </g>
       </svg>

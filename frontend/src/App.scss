@@ -1,9 +1,9 @@
 .wheel {
   position: relative;
-}
 
-.wheel line {
-  stroke: black;
+  line {
+    stroke: black;
+  }
 }
 
 .wheel__foreground {
@@ -23,10 +23,14 @@
   /*border: 1px solid #AAA;*/
   background-color: #FFF;
   padding: .25em;
-  transition: background-color .25s ease;
+  transition: background-color .25s ease, transform .25s ease;
   cursor: pointer;
+
+  &:hover {
+    background-color: lightgray;
+  }
 }
 
-.wheel__scene:hover {
-  background-color: lightgray;
+.wheel__scene--is-editing, .wheel__scene--was-editing {
+  transition: none;
 }

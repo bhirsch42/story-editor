@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import Wheel from './Wheel';
 import wheelData from './fixtures/sections';
 
