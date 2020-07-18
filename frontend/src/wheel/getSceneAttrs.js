@@ -32,6 +32,7 @@ function getSceneAttrs({ sections, sectionAngles, width }) {
         .centroid();
 
       return  {
+        scene,
         body: scene.body,
         x, y, lineX, lineY,
         width: width / 2 - Math.abs(x) - SCENE_PADDING * 2,

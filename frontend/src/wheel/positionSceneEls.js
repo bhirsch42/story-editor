@@ -40,6 +40,7 @@ function positionSceneEls(sceneEls) {
     let x = scene.x
     let y = Math.min(scene.y - scene.height, prevBound - scene.height - SCENE_PADDING);
     applyTransform(scene.el, x, y);
+    scene.el.style['text-align'] = 'left';
     prevBound = y;
   });
 
@@ -57,6 +58,7 @@ function positionSceneEls(sceneEls) {
     let x = scene.x;
     let y = Math.max(scene.y, prevBound);
     applyTransform(scene.el, x, y);
+    scene.el.style['text-align'] = 'left';
     prevBound = y + scene.height + SCENE_PADDING;
   });
 

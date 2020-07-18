@@ -12,9 +12,11 @@ export const SCENE_LINE_LENGTH = 10
 export const SCENE_LINE_PADDING = 5;
 export const SCENE_PADDING = 10;
 
-function Wheel({ sections }) {
+function Wheel({ sections: _sections }) {
   let width = 1000;
   let height = 600;
+
+  let [sections, setSections] = useState(_sections);
 
   let endAngle = 0;
   let sectionAngles = sections.map(({ size, id }) => {
@@ -30,9 +32,21 @@ function Wheel({ sections }) {
   let [currentlyEditingId, setCurrentlyEditingId] = useState(null);
   let [previouslyEditingId, setPreviouslyEditingId] = useState(null);
 
-  let onClickScene = scene => {
+  let editScene = scene => {
     setPreviouslyEditingId(currentlyEditingId);
-    setCurrentlyEditingId(scene.id);
+    setCurrentlyEditingId(scene && scene.id || null);
+  }
+
+  let deleteScene = scene => {
+    console.log('deleteScene', scene);
+    sections.forEach(section => {
+      let i = section.scenes.indexOf(scene);
+      if (i > -1) {
+        console.log("splice!", i)
+        section.scenes.splice(i, 1);
+        editScene(null);
+      }
+    });
   }
 
   return (
@@ -43,7 +57,8 @@ function Wheel({ sections }) {
                 width={width}
                 previouslyEditingId={previouslyEditingId}
                 currentlyEditingId={currentlyEditingId}
-                onClickScene={onClickScene}/>
+                editScene={editScene}
+                deleteScene={deleteScene}/>
       </div>
       <svg width={width} height={height} style={{border: '1px solid green'}}>
         <g style={transformCenter}>

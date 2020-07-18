@@ -14,7 +14,8 @@ function Scenes(props) {
       {sceneAttrs.map(scene => {
         return (
           <Scene {...scene}
-                 onClick={() => props.onClickScene(scene)}
+                 editScene={props.editScene}
+                 deleteScene={props.deleteScene}
                  isEditing={props.currentlyEditingId === scene.id}
                  wasEditing={props.previouslyEditingId === scene.id}/>
         );

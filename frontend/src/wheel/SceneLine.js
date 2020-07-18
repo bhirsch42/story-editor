@@ -10,14 +10,14 @@ function SceneLine({ scene, isEditing, wasEditing }) {
     let yAnimEl = yRef.current;
     let sceneEl = document.getElementById(`wheel-scene-${scene.id}`);
 
-    let x1 = Number(sceneEl.dataset.lineX)
-    let y1 = Number(sceneEl.dataset.lineY)
-    let translateX = Number(sceneEl.dataset.translateX)
-    let translateY = Number(sceneEl.dataset.translateY)
+    let x1 = Number(sceneEl.dataset.lineX);
+    let y1 = Number(sceneEl.dataset.lineY);
+    let translateX = Number(sceneEl.dataset.translateX);
+    let translateY = Number(sceneEl.dataset.translateY);
 
     let { width, height } = sceneEl.getBoundingClientRect();
     let x2 = translateX + (x1 < 0 ? width : 0);
-    let y2 = translateY + (y1 < 0 ? height : 0);
+    let y2 = translateY + (y1 <= 0 ? height : 0);
 
     lineRef.current.setAttribute('x1', x1);
     lineRef.current.setAttribute('y1', y1);
