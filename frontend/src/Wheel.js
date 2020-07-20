@@ -31,6 +31,7 @@ function Wheel({ sections: _sections }) {
 
   let [currentlyEditingId, setCurrentlyEditingId] = useState(null);
   let [previouslyEditingId, setPreviouslyEditingId] = useState(null);
+  let [draggingScene, setDraggingScene] = useState(null);
 
   let editScene = scene => {
     setPreviouslyEditingId(currentlyEditingId);
@@ -38,27 +39,54 @@ function Wheel({ sections: _sections }) {
   }
 
   let deleteScene = scene => {
-    console.log('deleteScene', scene);
     sections.forEach(section => {
       let i = section.scenes.indexOf(scene);
       if (i > -1) {
-        console.log("splice!", i)
         section.scenes.splice(i, 1);
         editScene(null);
       }
     });
   }
 
+  let dragEvents = {
+    onMouseDown(scene, e) {
+      setDraggingScene(scene);
+    },
+
+    onMouseUp(scene, e) {
+
+    },
+  }
+
+  let onMouseMove = (e) => {
+    if (!draggingScene || !draggingScene.dragging) return;
+    draggingScene.dragging.move = { x: e.clientX, y: e.clientY};
+    console.log('draggingScene', draggingScene)
+    // dragEvents.onMouseMove(scene, e);
+    // draggingScene
+    sections.forEach(section => {
+      let i = section.scenes.indexOf(draggingScene);
+      if (i > -1) {
+        section.scenes.splice(i, 1, draggingScene);
+        setSections([...sections]);
+      }
+    });
+  }
+
+
   return (
-    <div className="wheel">
+    <div className="wheel" onMouseMove={onMouseMove}>
       <div className="wheel__foreground" style={transformCenter}>
-        <Scenes sections={sections}
-                sectionAngles={sectionAngles}
-                width={width}
-                previouslyEditingId={previouslyEditingId}
-                currentlyEditingId={currentlyEditingId}
-                editScene={editScene}
-                deleteScene={deleteScene}/>
+        <Scenes
+          sections={sections}
+          sectionAngles={sectionAngles}
+          width={width}
+          previouslyEditingId={previouslyEditingId}
+          currentlyEditingId={currentlyEditingId}
+          editScene={editScene}
+          deleteScene={deleteScene}
+          dragEvents={dragEvents}
+        />
       </div>
       <svg width={width} height={height} style={{border: '1px solid green'}}>
         <g style={transformCenter}>

@@ -30,8 +30,18 @@
   background-color: lightgray;
 }
 
-.wheel__scene--is-editing, .wheel__scene--was-editing {
+.wheel__scene__body {
+  user-select: none;
+}
+
+.wheel__scene--is-editing,
+.wheel__scene--was-editing,
+.wheel__scene--is-dragging {
   transition: none;
+}
+
+.wheel__scene--is-dragging {
+  cursor: grabbing;
 }
 
 .wheel__scene__editor {
