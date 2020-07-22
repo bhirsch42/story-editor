@@ -1,12 +1,10 @@
-import React, { useRef, useLayoutEffect, useState, createRef } from 'react';
+import React, { useRef, useLayoutEffect, createRef } from 'react';
 import positionSceneEls from './positionSceneEls';
-import getSceneAttrs from './getSceneAttrs';
 import Scene from './Scene';
 
 function Scenes(props) {
-  let sceneAttrs = getSceneAttrs(props);
+  let { sceneAttrs } = props;
   const targetRef = useRef();
-
   let sceneRefs = useRef(sceneAttrs.map(() => createRef()));
 
   let scenes = sceneAttrs.map((sceneData, i) => {

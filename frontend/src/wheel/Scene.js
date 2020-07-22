@@ -19,7 +19,7 @@ function Scene(props) {
 
   let [scene, setScene] = useState(_scene);
 
-  let isDragging = scene.dragging && scene.dragging.down.x != scene.dragging.move.x
+  let isDragging = scene.dragging && scene.dragging.down.x !== scene.dragging.move.x
 
   let isEditingClass = isEditing ? 'wheel__scene--is-editing' : '';
   let wasEditingClass = wasEditing ? 'wheel__scene--was-editing' : '';
@@ -37,7 +37,7 @@ function Scene(props) {
   }
 
   let onEnterPress = e => {
-    if(e.keyCode == 13 && e.shiftKey == false) {
+    if(e.keyCode === 13 && e.shiftKey === false) {
       handleSubmitScene(e);
     }
   }
@@ -74,13 +74,13 @@ function Scene(props) {
     },
 
     onMouseUp(e) {
+      scene.dragging = null;
+
       if (isDragging) {
         dragEvents.onMouseUp(scene, e);
       } else {
         editScene(scene)
       }
-
-      scene.dragging = null;
     },
   }
 

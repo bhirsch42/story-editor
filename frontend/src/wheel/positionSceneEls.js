@@ -8,8 +8,6 @@ function positionSceneEls(scenePositioningData) {
     sceneEl: ref.current,
   }));
 
-  let sceneEls = scenePositioningData.map(({ sceneEl }) => sceneEl.current);
-
   let sceneBuckets = {
     top: {
       right: [],

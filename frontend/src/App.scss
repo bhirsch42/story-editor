@@ -21,7 +21,7 @@
   display: flex;
 
   padding: .25em;
-  transition: background-color .25s ease, transform .25s ease;
+  transition: background-color .25s ease, transform .15s linear;
   cursor: pointer;
 
 }

@@ -42,12 +42,12 @@ function SceneLine({ scene, isEditing, wasEditing }) {
                xlinkHref={`#scene-line-${scene.id}`}
                attributeName="x2"
                begin="indefinite"
-               dur="0.25s"/>
+               dur="0.15s"/>
       <animate ref={yRef}
                xlinkHref={`#scene-line-${scene.id}`}
                attributeName="y2"
                begin="indefinite"
-               dur="0.25s"/>
+               dur="0.15s"/>
     </g>
   )
 }
