@@ -27,8 +27,8 @@ function getSceneAttrs({ sections, sectionAngles, width }) {
         .centroid();
 
       let [lineX, lineY] = baseArc
-        .innerRadius(SECTION_INNER_RADIUS)
-        .outerRadius(SECTION_INNER_RADIUS)
+        .innerRadius(SECTION_OUTER_RADIUS)
+        .outerRadius(SECTION_OUTER_RADIUS)
         .centroid();
 
       return  {

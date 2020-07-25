@@ -3,12 +3,20 @@ import positionSceneEls from './positionSceneEls';
 import Scene from './Scene';
 
 function Scenes(props) {
-  let { sceneAttrs } = props;
+  let {
+    sceneAttrs,
+    handleDoneEditingScene,
+    deleteScene,
+    currentlyEditingId,
+    previouslyEditingId,
+    sceneEventHandlers,
+  } = props;
+
   const targetRef = useRef();
-  let sceneRefs = useRef(sceneAttrs.map(() => createRef()));
 
   let scenes = sceneAttrs.map((sceneData, i) => {
-    let ref = sceneRefs.current[i];
+    let ref = createRef();
+
     return {
       ref,
       scene: sceneData.scene,
@@ -16,11 +24,11 @@ function Scenes(props) {
         <Scene
           {...sceneData}
           childRef={ref}
-          editScene={props.editScene}
-          deleteScene={props.deleteScene}
-          isEditing={props.currentlyEditingId === sceneData.id}
-          wasEditing={props.previouslyEditingId === sceneData.id}
-          dragEvents={props.dragEvents}
+          handleDoneEditingScene={handleDoneEditingScene}
+          deleteScene={deleteScene}
+          isEditing={currentlyEditingId === sceneData.id}
+          wasEditing={previouslyEditingId === sceneData.id}
+          sceneEventHandlers={sceneEventHandlers}
         />
       ),
     }
