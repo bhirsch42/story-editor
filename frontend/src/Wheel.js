@@ -22,8 +22,8 @@ let ids = (function * () {
 })();
 
 function Wheel({ sections: _sections }) {
-  let width = 1000;
-  let height = 600;
+  let width = 1200;
+  let height = 800;
 
   let svgEl = useRef();
 
@@ -79,6 +79,9 @@ function Wheel({ sections: _sections }) {
 
   let sceneEventHandlers = {
     onMouseDown(scene, e) {
+      let editingEl = e.target.closest('.wheel__scene--is-editing');
+      if (editingEl) return;
+
       let el = e.target.closest('.wheel__scene');
 
       scene.dragging = {
