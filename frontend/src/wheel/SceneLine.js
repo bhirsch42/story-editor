@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect } from 'react';
 
 function SceneLine({ scene, isEditing, wasEditing }) {
   let lineRef = useRef();
+  let circleRef = useRef();
   let xRef = useRef();
   let yRef = useRef();
 
@@ -24,6 +25,9 @@ function SceneLine({ scene, isEditing, wasEditing }) {
     lineRef.current.setAttribute('x2', x2);
     lineRef.current.setAttribute('y2', y2);
 
+    circleRef.current.setAttribute('cx', x1);
+    circleRef.current.setAttribute('cy', y1);
+
     xAnimEl.setAttribute('from', xAnimEl.getAttribute('to') || x1);
     xAnimEl.setAttribute('to', x2);
     yAnimEl.setAttribute('from', yAnimEl.getAttribute('to') || y1);
@@ -37,7 +41,8 @@ function SceneLine({ scene, isEditing, wasEditing }) {
 
   return (
     <g>
-      <line ref={lineRef} id={`scene-line-${scene.id}`}/>
+      <line className="wheel__scene-line" ref={lineRef} id={`scene-line-${scene.id}`}/>
+      <circle className="wheel__scene-circle" ref={circleRef} id={`scene-circle-${scene.id}`} r="2"/>
       <animate ref={xRef}
                xlinkHref={`#scene-line-${scene.id}`}
                attributeName="x2"

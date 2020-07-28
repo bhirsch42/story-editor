@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { flatten, findIndex } from 'lodash';
+import React, { useState, useRef, useEffect } from 'react';
+import { flatten, findIndex, throttle } from 'lodash';
 import Scenes from './wheel/Scenes';
 import Circle from './wheel/Circle';
 import SceneLine from './wheel/SceneLine';
@@ -22,10 +22,10 @@ let ids = (function * () {
 })();
 
 function Wheel({ sections: _sections }) {
-  let width = 1200;
-  let height = 800;
-
+  let containerEl = useRef();
   let svgEl = useRef();
+  let [width, setWidth] = useState(window.innerWidth);
+  let [height, setHeight] = useState(window.innerHeight);
 
   let [sections, setSections] = useState(_sections);
   let [currentlyEditingId, setCurrentlyEditingId] = useState(null);
@@ -150,6 +150,20 @@ function Wheel({ sections: _sections }) {
     },
   };
 
+  useEffect(() => {
+    let handleResize = throttle(() => {
+      let rect = containerEl.current.getBoundingClientRect();
+      setWidth(rect.width);
+      setHeight(rect.height);
+    }, 200);
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    }
+  })
+
   let transformCenter = {transform: `translateX(${width / 2}px) translateY(${height / 2}px)`};
 
   let deleteScene = scene => {
@@ -158,7 +172,7 @@ function Wheel({ sections: _sections }) {
   };
 
   return (
-    <div className="wheel" {...containerEventHandlers}>
+    <div className="wheel" {...containerEventHandlers} ref={containerEl}>
       <div className="wheel__foreground" style={transformCenter}>
         <Scenes
           previouslyEditingId={previouslyEditingId}
@@ -169,7 +183,7 @@ function Wheel({ sections: _sections }) {
           sceneEventHandlers={sceneEventHandlers}
         />
       </div>
-      <svg ref={svgEl} width={width} height={height} style={{border: '1px solid green'}}>
+      <svg className="wheel__svg" ref={svgEl} width={width} height={height}>
         <g style={transformCenter}>
           <Circle sections={sections} sectionAngles={sectionAngles}/>
           <g className="wheel__scene-lines">

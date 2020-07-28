@@ -1,13 +1,13 @@
 export default [
   {
     id: 1,
-    size: 3/32,
+    size: 1/8,
     title: 'You',
     scenes: [],
   },
   {
     id: 4,
-    size: 3/32,
+    size: 1/8,
     title: 'Need',
     scenes: [],
   },
@@ -43,7 +43,7 @@ export default [
   },
   {
     id: 26,
-    size: 3/16,
+    size: 1/8,
     title: 'Change',
     scenes: [],
   },

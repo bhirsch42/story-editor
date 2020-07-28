@@ -1,16 +1,49 @@
+$red: #ff6188;
+$orange: #fc9867;
+$yellow: #ffd866;
+$green: #a9dc76;
+$blue: #78dce8;
+$purple: #ab9df2;
+$white: #ffedf0;
+$fg: $white;
+$bg: #191515;
+$bg-light: #211b1b;
+$bg-lighter: #292323;
+$secondary: $bg-lighter;
+
+@import './styles/button';
+@import './styles/display';
+@import './styles/spacing';
+
+body {
+  background: $bg;
+  color: $fg;
+}
+
+.wheel__arc {
+  fill: $bg-lighter;
+}
+
+.wheel__scene-line {
+  stroke: $fg;
+}
+
+.wheel__scene-circle {
+  fill: $fg;
+}
+
 .App {
   display: flex;
-  flex-direction: column;
+  fleion: column;
   align-items: center;
+  width: 100%;
+  height: 100vh;
 }
 
 .wheel {
   position: relative;
-  cursor: crosshair;
-
-  line {
-    stroke: black;
-  }
+  width: 100%;
+  height: 100%;
 }
 
 .wheel__foreground {
@@ -20,6 +53,16 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
+  z-index: 1;
+}
+
+.wheel__svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
 }
 
 .wheel__scenes {
@@ -39,7 +82,7 @@
 }
 
 .wheel__scene:hover:not(.wheel__scene--is-editing) {
-  background-color: lightgray;
+  background-color: $bg-lighter;
 }
 
 .wheel__scene__body {
@@ -60,12 +103,11 @@
   display: flex;
   align-items: flex-end;
   flex-direction: column;
-  width: 100vw;
+  width: 25rem;
   padding: .5em;
   padding-left: .75em;
-  border: 1px solid lightgray;
   border-radius: .25em;
-  background-color: white;
+  background-color: $bg-lighter;
 
   textarea {
     width: 100%;
@@ -75,5 +117,7 @@
     margin-bottom: .25em;
     border: none;
     outline: none;
+    background-color: $bg-lighter;
+    color: $fg;
   }
 }

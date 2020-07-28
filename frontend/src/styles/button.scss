@@ -1,0 +1,34 @@
+.btn {
+  border: none;
+  cursor: pointer;
+}
+
+.btn-danger {
+  background-color: rgba($red, .75);
+  color: $fg;
+  text-shadow: 2px 2px #ff0000;
+
+  &:hover {
+    background-color: $red;
+  }
+}
+
+.btn-success {
+  background-color: rgba($green, .75);
+  color: $fg;
+  text-shadow: 2px 2px #ff0000;
+
+  &:hover {
+    background-color: $green;
+  }
+}
+
+.btn-circle {
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

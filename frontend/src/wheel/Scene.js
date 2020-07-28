@@ -1,7 +1,10 @@
 import React, { useState, useRef } from 'react';
 import TextareaAutosize from 'react-autosize-textarea';
 import { mapValues } from 'lodash';
-import isSceneDragging from './isSceneDragging'
+import isSceneDragging from './isSceneDragging';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faCheck } from '@fortawesome/free-solid-svg-icons';
+
 
 function Scene(props) {
   let {
@@ -78,8 +81,14 @@ function Scene(props) {
             onKeyDown={onEnterPress}
           />
           <div className="actions">
-            <button type="button" onClick={() => deleteScene(scene)}>Delete</button>
-            <button type="submit">Done</button>
+            <div className="d-flex">
+              <button type="button" className="btn btn-danger btn-circle mr-1" onClick={() => deleteScene(scene)}>
+                <FontAwesomeIcon icon={faTrash} />
+              </button>
+              <button type="submit" className="btn btn-success btn-circle mr-1">
+                <FontAwesomeIcon icon={faCheck} />
+              </button>
+            </div>
           </div>
         </form>
       ) : (

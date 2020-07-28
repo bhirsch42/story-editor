@@ -16,7 +16,7 @@ function CircleArc({startAngle, endAngle}) {
     .padAngle(PAD_ANGLE)
     .cornerRadius(CORNER_RADIUS);
 
-  return <path d={base()}/>
+  return <path className="wheel__arc" d={base()}/>
 }
 
 function Circle({ sections, sectionAngles }) {
