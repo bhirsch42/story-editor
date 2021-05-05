@@ -16,18 +16,13 @@ export const SCENE_LINE_LENGTH = 10
 export const SCENE_LINE_PADDING = 5;
 export const SCENE_PADDING = 10;
 
-let ids = (function * () {
-  let id = 1000;
-  while(true) yield id++;
-})();
-
-function Wheel({ sections: _sections }) {
+function Wheel({ wheelData, onChange }) {
   let containerEl = useRef();
   let svgEl = useRef();
   let [width, setWidth] = useState(window.innerWidth);
   let [height, setHeight] = useState(window.innerHeight);
 
-  let [sections, setSections] = useState(_sections);
+  let [sections, setSections] = useState(wheelData.sections);
   let [currentlyEditingId, setCurrentlyEditingId] = useState(null);
   let [previouslyEditingId, setPreviouslyEditingId] = useState(null);
   let [mouseDownScene, setMouseDownScene] = useState(null);
@@ -37,15 +32,46 @@ function Wheel({ sections: _sections }) {
   let scenes = flatten(sections.map(({ scenes }) => scenes));
   let sceneAttrs = getSceneAttrs({sections, sectionAngles, width});
 
+  let ids = (function * () {
+    let id = Math.max(0, ...scenes.map(scene => scene.id));
+    while(true) yield ++id;
+  })();
+
+  useEffect(() => {
+    setSections(wheelData.sections);
+  }, [wheelData]);
+
   let reRender = () => setSections([...sections]);
+
+  let _onChange = () => {
+    onChange({
+      ...wheelData,
+      sections,
+    });
+  }
 
   let editScene = scene => {
     setPreviouslyEditingId(currentlyEditingId);
     let sceneId = scene && scene.id;
     setCurrentlyEditingId(sceneId || null);
+    _onChange();
   };
 
-  let handleDoneEditingScene = _scene => {
+  let updateScene = scene => {
+    console.log(scene)
+    sections.forEach(section => {
+      let i = findIndex(section.scenes, s => s.id === scene.id);
+      if (i > -1) section.scenes.splice(i, 1, scene);
+    });
+
+    _onChange();
+  }
+
+  let handleDoneEditingScene = scene => {
+    if (scene.body.length === 0) {
+      removeScene(scene);
+    }
+
     editScene(null);
   };
 
@@ -54,6 +80,8 @@ function Wheel({ sections: _sections }) {
       let i = findIndex(section.scenes, s => s.id === scene.id);
       if (i > -1) section.scenes.splice(i, 1);
     });
+
+    _onChange();
   };
 
   let insertSceneAt = (scene, x, y) => {
@@ -105,7 +133,7 @@ function Wheel({ sections: _sections }) {
 
   let containerEventHandlers = {
     onMouseDown(e) {
-      if (e.target != svgEl.current) return;
+      if (e.target !== svgEl.current) return;
 
       setNewScene({
         id: ids.next().value,
@@ -129,6 +157,7 @@ function Wheel({ sections: _sections }) {
 
       if (isDragging) {
         reRender();
+        _onChange();
       } else {
         editScene(mouseDownScene);
       }
@@ -178,6 +207,7 @@ function Wheel({ sections: _sections }) {
           previouslyEditingId={previouslyEditingId}
           currentlyEditingId={currentlyEditingId}
           handleDoneEditingScene={handleDoneEditingScene}
+          updateScene={updateScene}
           deleteScene={deleteScene}
           sceneAttrs={sceneAttrs}
           sceneEventHandlers={sceneEventHandlers}

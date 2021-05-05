@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import TextareaAutosize from 'react-autosize-textarea';
 import { mapValues } from 'lodash';
 import isSceneDragging from './isSceneDragging';
@@ -8,7 +8,7 @@ import { faTrash, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 function Scene(props) {
   let {
-    scene: _scene,
+    scene,
     x,
     y,
     lineX,
@@ -18,11 +18,10 @@ function Scene(props) {
     wasEditing,
     handleDoneEditingScene,
     deleteScene,
+    updateScene,
     childRef,
     sceneEventHandlers,
   } = props;
-
-  let [scene, setScene] = useState(_scene);
 
   let sceneEventHandlerClosures = mapValues(sceneEventHandlers, sceneEventHandler => {
     return (...args) => {
@@ -39,12 +38,14 @@ function Scene(props) {
   let textAreaRef = useRef();
 
   let handleChangeSceneBody = e => {
-    setScene({...scene, body: e.target.value});
+    // scene.body = e.target.value;
+    // setScene(scene);
+    updateScene({...scene, body: e.target.value});
   }
 
   let handleSubmitScene = e => {
     e.preventDefault();
-    handleDoneEditingScene(e);
+    handleDoneEditingScene(scene, e);
   }
 
   let onEnterPress = e => {

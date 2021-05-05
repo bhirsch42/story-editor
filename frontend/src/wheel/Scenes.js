@@ -7,6 +7,7 @@ function Scenes(props) {
     sceneAttrs,
     handleDoneEditingScene,
     deleteScene,
+    updateScene,
     currentlyEditingId,
     previouslyEditingId,
     sceneEventHandlers,
@@ -26,6 +27,7 @@ function Scenes(props) {
           childRef={ref}
           handleDoneEditingScene={handleDoneEditingScene}
           deleteScene={deleteScene}
+          updateScene={updateScene}
           isEditing={currentlyEditingId === sceneData.id}
           wasEditing={previouslyEditingId === sceneData.id}
           sceneEventHandlers={sceneEventHandlers}

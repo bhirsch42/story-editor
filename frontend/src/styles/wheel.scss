@@ -1,0 +1,102 @@
+.wheel__arc {
+  fill: $bg-lighter;
+}
+
+.wheel__scene-line {
+  stroke: $fg;
+}
+
+.wheel__scene-circle {
+  fill: $fg;
+}
+
+.App {
+  display: flex;
+  fleion: column;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.wheel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.wheel__foreground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wheel__svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+.wheel__scenes {
+  pointer-events: auto;
+}
+
+.wheel__scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+
+  padding: .25em;
+  transition: background-color .25s ease, transform .15s linear;
+  cursor: pointer;
+  border-radius: .25rem;
+}
+
+.wheel__scene:hover:not(.wheel__scene--is-editing) {
+  background-color: $bg-lighter;
+}
+
+.wheel__scene__body {
+  user-select: none;
+}
+
+.wheel__scene--is-editing,
+.wheel__scene--was-editing,
+.wheel__scene--is-dragging {
+  transition: none;
+}
+
+.wheel__scene--is-dragging {
+  cursor: grabbing;
+}
+
+.wheel__scene__editor {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  width: 25rem;
+  padding: .5em;
+  padding-left: .75em;
+  border-radius: .25em;
+  background-color: $bg-lighter;
+
+  textarea {
+    width: 100%;
+    height: 100%;
+    font-family: sans-serif;
+    font-size: 16px;
+    margin-bottom: .25em;
+    border: none;
+    outline: none;
+    background-color: $bg-lighter;
+    color: $fg;
+  }
+}
