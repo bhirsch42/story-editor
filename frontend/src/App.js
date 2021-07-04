@@ -56,6 +56,7 @@ function App() {
         wheelData={wheel}
         onChange={handleWheelChange}
       />
+      <div id="debug-dot" style={{borderRadius: '100%', width: '4px', height: '4px', backgroundColor: 'red', transform: 'translateX(-2px) translateY(-2px)', position: 'fixed', zIndex: '9999999'}}></div>
     </div>
   );
 }

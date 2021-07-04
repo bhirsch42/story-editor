@@ -23,10 +23,10 @@ function positionSceneEls(scenePositioningData) {
     let x = Number(sceneEl.dataset.x);
     let y = Number(sceneEl.dataset.y);
     let { width, height } = sceneEl.getBoundingClientRect();
-    let semiY = y > 0 ? 'bottom' : 'top';
-    let semiX = x > 0 ? 'right' : 'left';
+    let hemiY = y > 0 ? 'bottom' : 'top';
+    let hemiX = x > 0 ? 'right' : 'left';
 
-    sceneBuckets[semiY][semiX].push({
+    sceneBuckets[hemiY][hemiX].push({
       scene,
       el: sceneEl,
       x, y, width, height

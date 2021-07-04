@@ -1,12 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { flatten, findIndex, throttle } from 'lodash';
-import Scenes from './wheel/Scenes';
+import { findIndex, flatten, throttle } from 'lodash';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import angleTo from './lib/angleTo';
 import Circle from './wheel/Circle';
-import SceneLine from './wheel/SceneLine';
+import getCornerClosestToCenterCoords from './wheel/getCornerClosestToCenterCoords';
 import getSceneAttrs from './wheel/getSceneAttrs';
 import getSectionAngles from './wheel/getSectionAngles';
-import angleTo from './lib/angleTo';
-import isSceneDragging from './wheel/isSceneDragging'
+import isSceneDragging from './wheel/isSceneDragging';
+import SceneLine from './wheel/SceneLine';
+import Scenes from './wheel/Scenes';
 
 export const SECTION_INNER_RADIUS = 150;
 export const SECTION_OUTER_RADIUS = 160;
@@ -58,7 +59,6 @@ function Wheel({ wheelData, onChange }) {
   };
 
   let updateScene = scene => {
-    console.log(scene)
     sections.forEach(section => {
       let i = findIndex(section.scenes, s => s.id === scene.id);
       if (i > -1) section.scenes.splice(i, 1, scene);
@@ -85,7 +85,7 @@ function Wheel({ wheelData, onChange }) {
   };
 
   let insertSceneAt = (scene, x, y) => {
-    let angle = angleTo(x, y, svgEl);
+    let angle = angleTo(x, y, svgEl.current);
 
     let sectionAngle = sectionAngles.find(sectionAngle =>
       sectionAngle.startAngle <= angle && angle <= sectionAngle.endAngle);
@@ -169,27 +169,32 @@ function Wheel({ wheelData, onChange }) {
       if (!mouseDownScene || !mouseDownScene.dragging) return;
 
       let [ x, y ] = [ e.clientX, e.clientY ];
-
       mouseDownScene.dragging.move = { x, y };
+      let coords = getCornerClosestToCenterCoords(e.target, svgEl.current, mouseDownScene);
+
+      if (!coords) return;
 
       removeScene(mouseDownScene);
-      insertSceneAt(mouseDownScene, x, y);
+      insertSceneAt(mouseDownScene, ...coords);
 
       reRender();
     },
   };
 
-  useEffect(() => {
-    let handleResize = throttle(() => {
+  useLayoutEffect(() => {
+    let handleResize = () => {
       let rect = containerEl.current.getBoundingClientRect();
       setWidth(rect.width);
       setHeight(rect.height);
-    }, 200);
+    }
 
-    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    let throttledHandleResize = throttle(handleResize, 200);
+    window.addEventListener('resize', throttledHandleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', throttledHandleResize);
     }
   })
 
@@ -201,7 +206,7 @@ function Wheel({ wheelData, onChange }) {
   };
 
   return (
-    <div className="wheel" {...containerEventHandlers} ref={containerEl}>
+    <div className={"wheel" + (mouseDownScene ? ' --is-dragging' : '')} {...containerEventHandlers} ref={containerEl}>
       <div className="wheel__foreground" style={transformCenter}>
         <Scenes
           previouslyEditingId={previouslyEditingId}

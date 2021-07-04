@@ -100,3 +100,9 @@
     color: $fg;
   }
 }
+
+.wheel.--is-dragging {
+  .wheel__scene:not(.wheel__scene--is-dragging) {
+    pointer-events: none;
+  }
+}
