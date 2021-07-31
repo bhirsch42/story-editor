@@ -113,6 +113,7 @@ function Wheel({ wheelData, onChange }) {
       let el = e.target.closest('.wheel__scene');
 
       scene.dragging = {
+        el,
         origin: {
           x: Number(el.dataset.translateX),
           y: Number(el.dataset.translateY),
@@ -170,7 +171,7 @@ function Wheel({ wheelData, onChange }) {
 
       let [ x, y ] = [ e.clientX, e.clientY ];
       mouseDownScene.dragging.move = { x, y };
-      let coords = getCornerClosestToCenterCoords(e.target, svgEl.current, mouseDownScene);
+      let coords = getCornerClosestToCenterCoords(mouseDownScene.dragging.el, svgEl.current, mouseDownScene);
 
       if (!coords) return;
 

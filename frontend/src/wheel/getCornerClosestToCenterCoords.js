@@ -39,11 +39,9 @@ function getCornerClosestToCenterCoords(targetEl, containerEl, scene) {
     y = targetY + targetHeight;
   }
 
-  let debugDot = document.getElementById('debug-dot');
-  debugDot.style.left = `${x}px`;
-  debugDot.style.top = `${y}px`;
-
-  console.log({x, y, relX, relY, targetX, targetY})
+  // let debugDot = document.getElementById('debug-dot');
+  // debugDot.style.left = `${x}px`;
+  // debugDot.style.top = `${y}px`;
 
   return [x, y];
 }
