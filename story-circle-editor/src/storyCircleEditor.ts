@@ -1,4 +1,7 @@
 import * as vscode from 'vscode';
+import * as fs from 'fs';
+import * as cheerio from 'cheerio';
+import * as path from 'path';
 
 export class StoryCircleEditorProvider implements vscode.CustomTextEditorProvider {
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
@@ -52,17 +55,24 @@ export class StoryCircleEditorProvider implements vscode.CustomTextEditorProvide
 
   private getHtmlForWebview(webview: vscode.Webview): string {
     console.log("GET HTML FOR WEBVIEW");
-    return `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <title>Cat Scratch</title>
-      </head>
-      <body>
-        <h1>Hello, world!</h1>
-      </body>
-      </html>
-    `;
+    let html = fs.readFileSync('./src/app/index.html').toString();
+    const $ = cheerio.load(html);
+
+    // console.log($.html());
+
+    $('script').each((_i, el: any) => {
+      if ($(el).attr('src')) {
+        console.log("HELLO", $(el).attr('src'))
+        const uri = vscode.Uri.file(
+          path.join(this.context.extensionPath, `/src/app${$(el).attr('src')}`)
+        );
+  
+        $(el).attr('src', webview.asWebviewUri(uri).toString());  
+      }
+    });
+
+    console.log($.html());
+
+    return $.html();
   }
 }
