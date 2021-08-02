@@ -1,6 +1,4 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
-import * as cheerio from 'cheerio';
 import * as path from 'path';
 
 export class StoryCircleEditorProvider implements vscode.CustomTextEditorProvider {
@@ -54,25 +52,39 @@ export class StoryCircleEditorProvider implements vscode.CustomTextEditorProvide
   }
 
   private getHtmlForWebview(webview: vscode.Webview): string {
-    console.log("GET HTML FOR WEBVIEW");
-    let html = fs.readFileSync('./src/app/index.html').toString();
-    const $ = cheerio.load(html);
+    const configJson = JSON.stringify({});
 
-    // console.log($.html());
+    const reactAppPathOnDisk = vscode.Uri.file(
+      path.join(this.context.extensionPath, "dist", "app.js")
+    );
 
-    $('script').each((_i, el: any) => {
-      if ($(el).attr('src')) {
-        console.log("HELLO", $(el).attr('src'))
-        const uri = vscode.Uri.file(
-          path.join(this.context.extensionPath, `/src/app${$(el).attr('src')}`)
-        );
-  
-        $(el).attr('src', webview.asWebviewUri(uri).toString());  
-      }
-    });
+    const reactAppUri = reactAppPathOnDisk.with({ scheme: "vscode-resource" });
 
-    console.log($.html());
+    return `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Config View</title>
 
-    return $.html();
+          <meta http-equiv="Content-Security-Policy"
+                content="default-src 'none';
+                        img-src https:;
+                        script-src 'unsafe-eval' 'unsafe-inline' vscode-resource:;
+                        style-src vscode-resource: 'unsafe-inline';">
+
+          <script>
+            window.acquireVsCodeApi = acquireVsCodeApi;
+            window.initialData = ${configJson};
+          </script>
+      </head>
+      <body>
+          <div id="root"></div>
+
+          <script src="${reactAppUri}"></script>
+      </body>
+      </html>
+    `;
   }
 }
